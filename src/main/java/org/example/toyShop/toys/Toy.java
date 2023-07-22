@@ -1,6 +1,6 @@
-package org.example.Toys;
+package org.example.toyShop.toys;
 
-import org.example.Names;
+import org.example.toyShop.Names;
 
 import java.util.Random;
 

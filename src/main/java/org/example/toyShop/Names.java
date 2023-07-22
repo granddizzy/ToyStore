@@ -1,4 +1,4 @@
-package org.example;
+package org.example.toyShop;
 
 public enum Names {
     БамблБи, Марио, Смурфетта, Стич, Беззубик, Пикачу, Бэймакс, Бэмби, Гаечка, Дамбо, Винни_Пух,

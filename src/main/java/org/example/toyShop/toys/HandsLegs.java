@@ -1,4 +1,4 @@
-package org.example.Toys;
+package org.example.toyShop.toys;
 
 public interface HandsLegs {
     int hands = 2;

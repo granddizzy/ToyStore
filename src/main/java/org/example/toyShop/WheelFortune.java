@@ -1,4 +1,4 @@
-package org.example;
+package org.example.toyShop;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -23,6 +23,15 @@ public class WheelFortune {
 
     public int run () {
         int rand = new Random().nextInt(numbers.size());
-        return numbers.get(rand).number;
+        int ballNumber =  numbers.get(rand).number;
+
+        // удаляем шар из колеса
+        numbers.remove(numbers.get(rand));
+
+        return ballNumber;
+    }
+
+    public int getCountBalls() {
+        return numbers.size();
     }
 }

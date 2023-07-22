@@ -1,42 +1,27 @@
 package org.example;
 
-import org.example.Toys.Constructor;
-import org.example.Toys.Doll;
-import org.example.Toys.Robot;
-import org.example.Toys.Toy;
-
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
+import org.example.toyShop.ToyShop;
+import org.example.toyShop.toys.Constructor;
+import org.example.toyShop.toys.Doll;
+import org.example.toyShop.toys.Robot;
 
 public class Main {
     public static void main(String[] args) {
 
-        Queue<Toy> prizeLine = new LinkedList<>();
+        ToyShop toyShop = new ToyShop();
 
-        Showcase showcase = new Showcase();
+        // добавляем игрушки в магазин
+        toyShop.addToy(new Constructor("Конструктор 1", 10));
+        toyShop.addToy(new Robot("Робот 1", 20));
+        toyShop.addToy(new Doll("Кукла 1", 30));
 
-        showcase.addToy(new Constructor("Конструктор 1", 10));
-        showcase.addToy(new Robot("Робот 1", 20));
-        showcase.addToy(new Doll("Кукла 1", 30));
+        // смотрим витрину
+        System.out.println(toyShop.getShowcase());
 
-        System.out.println(showcase);
+        // провести лотерею
+        toyShop.holdALottery();
 
-        // создаем колесо
-        WheelFortune wheelOfFortune = new WheelFortune();
-
-        // добавляем шары
-        for (Toy toy : showcase.getToys()) {
-            wheelOfFortune.addNubmer(toy.getId(), toy.getWeight());
-        }
-
-        // крутим колесо ... сектор ПРИЗ на барабане ;)
-        int prizeToyId = wheelOfFortune.run();
-
-        //добавляем в очередь на получение
-        prizeLine.add(showcase.getToy(prizeToyId));
-
-
+        // получить призовую игрушку
+        System.out.println(toyShop.getAPrizeToy());
     }
 }
