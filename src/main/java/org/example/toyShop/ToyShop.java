@@ -44,6 +44,11 @@ public class ToyShop {
     }
 
     public Toy getAPrizeToy() {
-        return prizeLine.poll();
+        Toy toy = prizeLine.poll();
+        showcase.delToy(toy);
+
+        // записать в файл
+
+        return toy;
     }
 }

@@ -11,8 +11,8 @@ public class Main {
         ToyShop toyShop = new ToyShop();
 
         // добавляем игрушки в магазин
-        toyShop.addToy(new Constructor("Конструктор 1", 10));
-        toyShop.addToy(new Robot("Робот 1", 20));
+        toyShop.addToy(new Constructor("Конструктор 1", 30));
+        toyShop.addToy(new Robot("Робот 1", 30));
         toyShop.addToy(new Doll("Кукла 1", 30));
 
         // смотрим витрину
