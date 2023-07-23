@@ -7,21 +7,24 @@ import java.util.ArrayList;
 public class Showcase {
 
     private final ArrayList<Toy> toys;
-    private int lastId;
+    private final int size;
 
-    public Showcase() {
-        this.lastId = 0;
+    private ShowcaseTypes type;
+
+    public Showcase(ShowcaseTypes type, int size) {
         this.toys = new ArrayList<>();
+        this.size = size;
+        this.type = type;
     }
 
-    public void addToy(Toy toy){
-        this.lastId = lastId + 1;
-        toy.setId(lastId);
-        toys.add(toy);
+    public void addToy(Toy toy) {
+        if (toy.getId() != 0) {
+            toys.add(toy);
+        }
     }
 
     public Toy getToy(int toyId) {
-        for (Toy toy:  toys) {
+        for (Toy toy : toys) {
             if (toy.getId() == toyId) {
                 return toy;
             }
@@ -30,7 +33,11 @@ public class Showcase {
         return null;
     }
 
-    public void delToy(Toy toy){
+    public Toy getToyByIndex(int index) {
+        return toys.get(index);
+    }
+
+    public void delToy(Toy toy) {
         toys.remove(toy);
     }
 
@@ -38,13 +45,9 @@ public class Showcase {
         return toys;
     }
 
-    public int getNewID(){
-        return lastId + 1;
-    }
-
     public int getQuantity(Toy toy) {
         int quantity = 0;
-        for (Toy tmpToy :toys) {
+        for (Toy tmpToy : toys) {
             if (toy.getClass() == tmpToy.getClass()) {
                 quantity++;
             }
@@ -56,10 +59,48 @@ public class Showcase {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Toy toy: toys) {
-            sb.append(toy.toString()).append("\n");
+
+        if (toys.size() > 0) {
+            for (Toy toy : toys) {
+                sb.append(toy.toString()).append("\n");
+            }
+        } else {
+            sb.append("Пусто");
         }
 
         return sb.toString();
+    }
+
+    public int getToyQuantity() {
+        return toys.size();
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public ShowcaseTypes getType() {
+        return type;
+    }
+
+    public void setType(ShowcaseTypes type) {
+        if (toys.size() == 0) {
+            this.type = type;
+        }
+    }
+
+    public boolean contains(Toy toy) {
+        for (Toy tmpToy : toys) {
+            if (tmpToy.equals(toy)) return true;
+        }
+        return false;
+    }
+
+    public boolean checkFullShowcase() {
+        return this.getToyQuantity() == this.getSize();
+    }
+
+    public boolean checkEmptyShowcase() {
+        return this.getToyQuantity() <= 0;
     }
 }
