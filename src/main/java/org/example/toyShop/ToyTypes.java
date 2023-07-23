@@ -1,5 +1,5 @@
 package org.example.toyShop;
 
-public enum ShowcaseTypes {
+public enum ToyTypes {
     Doll, Constructor, Robot
 }

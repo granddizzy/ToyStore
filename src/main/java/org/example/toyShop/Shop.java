@@ -18,7 +18,7 @@ public class Shop {
         showcases = new ArrayList<>();
     }
 
-    public void addShowcase(ShowcaseTypes type, int size) {
+    public void addShowcase(ToyTypes type, int size) {
         showcases.add(new Showcase(type, size));
     }
 
@@ -98,12 +98,11 @@ public class Shop {
 
     public Toy getToyById(int id) {
         for (Showcase showcase : showcases) {
-            for (Toy toy: showcase.getToys()) {
+            for (Toy toy : showcase.getToys()) {
                 if (toy.getId() == id) return toy;
             }
         }
 
         return null;
     }
-
 }

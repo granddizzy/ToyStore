@@ -9,9 +9,9 @@ public class Showcase {
     private final ArrayList<Toy> toys;
     private final int size;
 
-    private ShowcaseTypes type;
+    private ToyTypes type;
 
-    public Showcase(ShowcaseTypes type, int size) {
+    public Showcase(ToyTypes type, int size) {
         this.toys = new ArrayList<>();
         this.size = size;
         this.type = type;
@@ -79,11 +79,11 @@ public class Showcase {
         return size;
     }
 
-    public ShowcaseTypes getType() {
+    public ToyTypes getType() {
         return type;
     }
 
-    public void setType(ShowcaseTypes type) {
+    public void setType(ToyTypes type) {
         if (toys.size() == 0) {
             this.type = type;
         }

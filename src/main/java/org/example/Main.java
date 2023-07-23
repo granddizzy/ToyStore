@@ -1,10 +1,9 @@
 package org.example;
 
-import org.example.toyShop.Shop;
-import org.example.toyShop.Showcase;
-import org.example.toyShop.ShowcaseTypes;
-import org.example.toyShop.Stock;
+import org.example.toyShop.*;
 import org.example.toyShop.toys.Toy;
+
+import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,9 +15,9 @@ public class Main {
         Stock stock = new Stock();
 
         // добавляем витрины
-        shop.addShowcase(ShowcaseTypes.Constructor, 10);
-        shop.addShowcase(ShowcaseTypes.Doll, 10);
-        shop.addShowcase(ShowcaseTypes.Robot, 10);
+        shop.addShowcase(ToyTypes.Constructor, 10);
+        shop.addShowcase(ToyTypes.Doll, 10);
+        shop.addShowcase(ToyTypes.Robot, 10);
 
         View view = new View();
         view.showGreeting(shop);
@@ -59,23 +58,22 @@ public class Main {
                     view.errorEmptyPrizeLine();
                 } else {
                     while (shop.getPrizeLineSize() > 0) {
+                        // берем игрушку
                         Toy toy = shop.getAPrizeToy();
 
+                        // выбираем ребенка
+                        int index = new Random().nextInt(ChildNames.values().length);
+                        ChildNames[] childs = ChildNames.values();
+                        ChildNames child = childs[index];
+
+                        // вручаем игрушку
+                        view.showMessage(child.toString() + " получил " + toy.getType() + " " + toy.getName());
+
+                        // записать в файл
                     }
                     view.showMessage("Игрушки розданы!");
                 }
             }
         }
-    }
-
-
-    enum DollNames {
-        Маша, Петя, Саша, Даша, Паша, Таша, Каша, Иваша, Аркаша, Ромаша, Зояша, Наташа, Мараша, Валяша,
-        Катюша, Рома, Зоя, Мариша, Валя, Люся, Лида, Ксюша, Оля,
-        Ляля, Даня, Лада, Таня, Вика, Максик, Юля, Дима, Женя, Жужа, Эля, Илюша, Кариша, Гриша, Гоша, Лампа, Ева, Уля, Зина,
-        Йоля, Надя, Нюра, Зорик, Шура, Олежка, Галя, Нина, Дина, Серёжа, Вадик, Ярик, Федя, Филя, Киря, Кира, Лёня, Светик,
-        Лёша, Тима, Тома, Жора, Чита, Христя, Кристя, Толя, Хабибка, Лёва, Лина, Лена, Аля, Настя, Аня, Инна, Ира, Рита, Майя,
-        Мила, Миша, Никита, Рая, Боря, Валька, Игорь, Марат, Родя, Юра, Слава, Люба, Люда, Поля, Соня, Софа, Лиза, Яна, Андрик,
-        Арсений, Иося, Коля, Сёма, Вася, Веня, Витя, Владик, Егор
     }
 }

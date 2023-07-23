@@ -12,18 +12,21 @@ public class Stock {
         this.lastToyId = 0;
     }
 
-    public Toy takeFromWarehouse(ShowcaseTypes type) {
+    public Toy takeFromWarehouse(ToyTypes type) {
         Toy toy = null;
 
         switch (type) {
             case Doll: {
-                toy = new Doll("Кукла", 30);
+                toy = new Doll();
+                break;
             }
             case Robot: {
-                toy = new Robot("Робот", 30);
+                toy = new Robot();
+                break;
             }
             case Constructor: {
-                toy = new Constructor("Конструктор", 30);
+                toy = new Constructor();
+                break;
             }
         }
 
@@ -32,6 +35,7 @@ public class Stock {
     }
 
     public int getNewID() {
-        return lastToyId + 1;
+        this.lastToyId++;
+        return this.lastToyId;
     }
 }

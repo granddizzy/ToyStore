@@ -1,6 +1,7 @@
 package org.example.toyShop.toys;
 
-import org.example.toyShop.Names;
+import org.example.toyShop.ToyNames;
+import org.example.toyShop.ToyTypes;
 
 import java.util.Random;
 
@@ -8,20 +9,22 @@ public abstract class Toy {
     private int id;
     private String name;
     private int weight;
+    private ToyTypes type;
 
-    public Toy(String name, int weight) {
+    public Toy(int weight, ToyTypes type) {
         this.id = 0;
-        this.name = name;
+        this.name = getRandomName();
         this.weight = weight;
+        this.type = type;
     }
 
     public static String getRandomName() {
-        return Names.values()[new Random().nextInt(Names.values().length)].toString();
+        return ToyNames.values()[new Random().nextInt(ToyNames.values().length)].toString();
     }
 
     @Override
     public String toString() {
-        return "ID: " + this.id + ", Имя: " + this.name;
+        return "ID: " + this.id + ", Тип: " + this.type + ", Имя: " + this.name;
     }
 
     public void setId(int id) {
@@ -42,5 +45,9 @@ public abstract class Toy {
 
     public String getName() {
         return name;
+    }
+
+    public ToyTypes getType() {
+        return type;
     }
 }

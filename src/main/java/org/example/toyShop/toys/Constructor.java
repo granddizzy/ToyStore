@@ -1,7 +1,10 @@
 package org.example.toyShop.toys;
 
+import org.example.toyShop.ToyTypes;
+
 public class Constructor extends Toy {
-    public Constructor(String name, int weight) {
-        super(name, weight);
+
+    public Constructor() {
+        super(30, ToyTypes.Constructor);
     }
 }
