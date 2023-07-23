@@ -35,7 +35,7 @@ public class ToyShop {
         }
 
         // крутим колесо пока есть шары
-        while (wheelOfFortune.getCountBalls() > 0) {
+        while (wheelOfFortune.getNumberOfBalls() > 0) {
             int prizeToyId = wheelOfFortune.run();
 
             // сектор ПРИЗ на барабане ;)
