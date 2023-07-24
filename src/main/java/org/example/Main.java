@@ -3,6 +3,7 @@ package org.example;
 import org.example.toyShop.*;
 import org.example.toyShop.toys.Toy;
 
+import java.io.*;
 import java.util.Random;
 
 public class Main {
@@ -67,12 +68,36 @@ public class Main {
                         ChildNames child = childs[index];
 
                         // вручаем игрушку
-                        view.showMessage(child.toString() + " получил " + toy.getType() + " " + toy.getName());
+                        view.showMessage(child.toString() + " получил(а) " + toy.getType() + " " + toy.getName());
 
                         // записать в файл
+                        String file_path = "log.txt";
+                        saveInLog(file_path, toy, child);
                     }
                     view.showMessage("Игрушки розданы!");
                 }
+            }
+        }
+    }
+
+    private static void saveInLog(String file_path, Toy toy, ChildNames child) {
+        File file = new File(file_path);
+        FileWriter fr = null;
+        BufferedWriter br = null;
+        try {
+            fr = new FileWriter(file, true);
+            br = new BufferedWriter(fr);
+//            br.newLine();
+            br.write(child.toString() + " получил(а) " + toy.getType() + " " + toy.getName() + "\n");
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                br.close();
+                fr.close();
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
