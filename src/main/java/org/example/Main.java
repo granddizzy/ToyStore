@@ -1,7 +1,7 @@
 package org.example;
 
 import org.example.toyShop.*;
-import org.example.toyShop.toys.Toy;
+import org.example.toyShop.Toy;
 
 import java.io.*;
 import java.util.Random;
@@ -12,74 +12,141 @@ public class Main {
         // создаем магазин
         Shop shop = new Shop("Магазин игрушек");
 
-        // создаем склад
-        Stock stock = new Stock();
-
-        // добавляем витрины
-        shop.addShowcase(ToyTypes.Constructor, 10);
-        shop.addShowcase(ToyTypes.Doll, 10);
-        shop.addShowcase(ToyTypes.Robot, 10);
-
         View view = new View();
         view.showGreeting(shop);
 
+        label:
         while (true) {
-            view.showMenu();
+            view.showMainMenu();
             String num = view.input("Выберите пункт меню: ");
-            int numb = Integer.parseInt(num);
-            if (numb == 5) {
-                break;
-            } else if (numb == 1) {
-                view.shopInspection(shop);
-            } else if (numb == 2) {
-                if (shop.checkFullShowcases()) {
-                    view.errorFullShowcase();
-                } else {
-                    // заполняем витрины
-                    for (Showcase showcase : shop.getShowcases()) {
-                        while (!showcase.checkFullShowcase()) {
-                            showcase.addToy(stock.takeFromWarehouse(showcase.getType()));
+            switch (num) {
+                case "0":
+                    break label;
+                case "1":
+                    view.shopInspection(shop);
+                    break;
+                case "2": {
+                    String toyType = view.input("Введите тип игрушки:");
+                    if (toyType.isEmpty()) continue;
+                    String numberOfToys;
+                    do {
+                        numberOfToys = view.input("Введите количество игрушек:");
+                    } while (!checkIsDigit(numberOfToys) || Integer.parseInt(numberOfToys) <= 0);
+                    String weightOfToys;
+                    do {
+                        weightOfToys = view.input("Введите вес выпадения игрушки:");
+                    } while (!checkIsDigit(weightOfToys));
+                    for (int i = 0; i < Integer.parseInt(numberOfToys); i++) {
+                        shop.getWarehouse().addToy(toyType, Integer.parseInt(weightOfToys));
+                    }
+                    break;
+                }
+                case "3": {
+                    String toyType = view.input("Введите тип игрушек на витрине:");
+                    if (toyType.isEmpty()) continue;
+                    String showcaseSize;
+                    do {
+                        showcaseSize = view.input("Введите размер витрины:");
+                    } while (!checkIsDigit(showcaseSize) || Integer.parseInt(showcaseSize) <= 0);
+                    shop.addShowcase(toyType, Integer.parseInt(showcaseSize));
+                    break;
+                }
+                case "4":
+                    String idShowcase;
+                    do {
+                        idShowcase = view.input("Введите ID витрины для удаления:");
+                    } while (!checkIsDigit(idShowcase));
+                    Showcase sc = shop.getShowcaseById(Integer.parseInt(idShowcase));
+                    if (sc == null) {
+                        view.showMessage("Нет витрины с таким ID");
+                    } else {
+                        if (shop.delShowcase(sc)) view.showMessage("Витрина c ID: " + idShowcase + " удалена");
+                    }
+                    break;
+                case "5":
+                    if (shop.getNumberOfShoucases() == 0) {
+                        view.errorNoShowcases();
+                    } else if (shop.checkFullShowcases()) {
+                        view.errorFullShowcases();
+                    } else {
+                        // заполняем витрины
+                        for (Showcase showcase : shop.getShowcases()) {
+                            while (!showcase.checkFullShowcase()) {
+                                Toy newToy = shop.getWarehouse().takeFromWarehouse(showcase.getType());
+                                if (newToy == null) {
+                                    view.showMessage("На складе не хватает игрушек типа:" + showcase.getType());
+                                    break;
+                                }
+                                showcase.addToy(newToy);
+                            }
+                        }
+                        for (Showcase showcase : shop.getShowcases()) {
+                            view.showMessage("Витрина ID:" + showcase.getId() + " с игрушками типа:" + showcase.getType() + " заполнена на " + Math.round((double) showcase.getToyQuantity() / showcase.getSize() * 100) + "%");
                         }
                     }
-                    view.showMessage("Витрины заполнены.");
-                }
-            } else if (numb == 3) {
-                if (shop.checkEmptyShowcases()) {
-                    view.errorEmptyShowcase();
-                } else {
-                    if (shop.getPrizeLine().size() != 0) {
-                        view.errorNotEmptyQueue();
+                    break;
+                case "6":
+                    if (shop.getNumberOfShoucases() == 0) {
+                        view.errorNoShowcases();
+                    } else if (shop.checkEmptyShowcases()) {
+                        view.errorEmptyShowcase();
                     } else {
-                        shop.holdALottery();
-                        view.showMessage("Розыгрыш проведен.");
+                        if (shop.getPrizeLine().size() != 0) {
+                            view.errorNotEmptyQueue();
+                        } else {
+                            shop.holdALottery();
+                            view.showMessage("Розыгрыш проведен.");
+                        }
                     }
-                }
-            } else if (numb == 4) {
-                if (shop.getPrizeLineSize() == 0) {
-                    view.errorEmptyPrizeLine();
-                } else {
-                    while (shop.getPrizeLineSize() > 0) {
-                        // берем игрушку
-                        Toy toy = shop.getAPrizeToy();
+                    break;
+                case "7":
+                    if (shop.getPrizeLineSize() == 0) {
+                        view.errorEmptyPrizeLine();
+                    } else {
+                        while (shop.getPrizeLineSize() > 0) {
+                            // берем игрушку
+                            Toy toy = shop.getAPrizeToy();
 
-                        // выбираем ребенка
-                        int index = new Random().nextInt(ChildNames.values().length);
-                        ChildNames[] childs = ChildNames.values();
-                        ChildNames child = childs[index];
+                            // выбираем ребенка
+                            int index = new Random().nextInt(ChildNames.values().length);
 
-                        // вручаем игрушку
-                        view.showMessage(child.toString() + " получил(а) " + toy.getType() + " " + toy.getName());
+                            ChildNames[] childs = ChildNames.values();
+                            ChildNames child = childs[index];
 
-                        // записать в файл
-                        String file_path = "log.txt";
-                        saveInLog(file_path, toy, child);
+                            // вручаем игрушку
+                            view.showMessage(child.toString() + " получил(а) " + toy.getType() + " " + toy.getName());
+
+                            // записать в файл
+                            String file_path = "log.txt";
+                            saveInLog(file_path, toy, child);
+                        }
+                        view.showMessage("Игрушки розданы!");
                     }
-                    view.showMessage("Игрушки розданы!");
-                }
+                    break;
             }
         }
     }
 
+    /**
+     * Проверка является ли введенная строка числом
+     * @param number
+     * @return
+     */
+    private static boolean checkIsDigit(String number) {
+        try {
+            Integer.parseInt(number);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Записывает выданную ребенку игрушку в файл
+     * @param file_path
+     * @param toy
+     * @param child
+     */
     private static void saveInLog(String file_path, Toy toy, ChildNames child) {
         File file = new File(file_path);
         FileWriter fr = null;
@@ -87,9 +154,7 @@ public class Main {
         try {
             fr = new FileWriter(file, true);
             br = new BufferedWriter(fr);
-//            br.newLine();
             br.write(child.toString() + " получил(а) " + toy.getType() + " " + toy.getName() + "\n");
-
         } catch (IOException e) {
             System.out.println(e.getMessage());
         } finally {
