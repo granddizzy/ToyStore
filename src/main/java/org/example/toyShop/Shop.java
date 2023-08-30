@@ -1,7 +1,5 @@
 package org.example.toyShop;
 
-import org.example.toyShop.toys.Toy;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -10,22 +8,39 @@ public class Shop {
     private Queue<Toy> prizeLine;
     public final String name;
     private ArrayList<Showcase> showcases;
-    private int lastToyId;
+    private Warehouse warehouse;
+    private int lastShowcaseId;
 
     public Shop(String name) {
         prizeLine = new LinkedList<>();
         this.name = name;
         showcases = new ArrayList<>();
+        warehouse = new Warehouse();
+        lastShowcaseId = 0;
     }
 
-    public void addShowcase(ToyTypes type, int size) {
-        showcases.add(new Showcase(type, size));
+    public void addShowcase(String type, int size) {
+        lastShowcaseId++;
+        showcases.add(new Showcase(lastShowcaseId, type, size));
     }
 
-    public void delShowcase(Showcase showcase) {
-        if (showcase.getToyQuantity() == 0) {
-            showcases.remove(showcase);
+    public Showcase getShowcaseById(int id) {
+        for (Showcase sc: showcases) {
+            if (sc.getId() == id) return sc;
         }
+        return null;
+    }
+
+    public boolean delShowcase(Showcase showcase) {
+        if (showcase.getToyQuantity() != 0) {
+            return false;
+        }
+        showcases.remove(showcase);
+        return true;
+    }
+
+    public int getNumberOfShoucases() {
+        return showcases.size();
     }
 
     public Showcase getShowcaseByIndex(int index) {
@@ -50,10 +65,6 @@ public class Shop {
         return true;
     }
 
-    //    public void addToy(Toy toy) {
-//        showcase.addToy(toy);
-//    }
-
     /**
      * Проводит розыгрыш игрушек и добавляет в очередь на выдачу
      */
@@ -61,7 +72,7 @@ public class Shop {
         // создаем колесо
         WheelFortune wheelOfFortune = new WheelFortune();
 
-        // добавляем шары
+        // добавляем шары с id игрушек из каждой витрины и шансом выпадения
         for (Showcase showcase : showcases) {
             for (Toy toy : showcase.getToys()) {
                 wheelOfFortune.addNubmer(toy.getId(), toy.getWeight());
@@ -104,5 +115,9 @@ public class Shop {
         }
 
         return null;
+    }
+
+    public Warehouse getWarehouse() {
+        return warehouse;
     }
 }

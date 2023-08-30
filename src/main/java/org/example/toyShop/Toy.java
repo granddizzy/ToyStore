@@ -1,17 +1,16 @@
-package org.example.toyShop.toys;
+package org.example.toyShop;
 
 import org.example.toyShop.ToyNames;
-import org.example.toyShop.ToyTypes;
 
 import java.util.Random;
 
-public abstract class Toy {
+public class Toy {
     private int id;
     private String name;
     private int weight;
-    private ToyTypes type;
+    private String type;
 
-    public Toy(int weight, ToyTypes type) {
+    public Toy(String type, int weight) {
         this.id = 0;
         this.name = getRandomName();
         this.weight = weight;
@@ -47,7 +46,7 @@ public abstract class Toy {
         return name;
     }
 
-    public ToyTypes getType() {
+    public String getType() {
         return type;
     }
 }

@@ -2,7 +2,6 @@ package org.example.toyShop;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.stream.IntStream;
 
 public class WheelFortune {
     ArrayList<BallWheelOfFortune> balls = new ArrayList<>();

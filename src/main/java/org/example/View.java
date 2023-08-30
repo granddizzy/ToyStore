@@ -5,7 +5,7 @@ import org.example.toyShop.Shop;
 import java.util.Scanner;
 
 import org.example.toyShop.Showcase;
-import org.example.toyShop.toys.Toy;
+import org.example.toyShop.Toy;
 
 public class View {
 
@@ -13,31 +13,38 @@ public class View {
         System.out.println(shop.name + " приветствет тебя, мой дорогой хозяин!\nНапоминаю, что сегодня для тебя особенный день: в честь детского праздника ты сегодня проводишь розыгрыш игрушек.\nПосмотри, что для этого можно сделать.\n");
     }
 
-    public void showMenu() {
+    public void showMainMenu() {
         System.out.println("Главное меню: ");
         System.out.println("1. Осмотреть магазин");
-        System.out.println("2. Пополнить витрины");
-        System.out.println("3. Провести розыгрыш");
-        System.out.println("4. Раздавать игрушки");
-        System.out.println("5. Уйти");
+        System.out.println("2. Добавить игрушки на склад");
+        System.out.println("3. Добавить витрину");
+        System.out.println("4. Удалить витрину");
+        System.out.println("5. Пополнить витрины со склада");
+        System.out.println("6. Провести розыгрыш");
+        System.out.println("7. Раздавать игрушки");
+        System.out.println("0. Уйти");
     }
 
     public String input(String text) {
-        System.out.println(text);
+        System.out.print(text);
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
     }
 
-    public void errorFullShowcase() {
-        System.out.println("Витрина переполнена");
+    public void errorFullShowcases() {
+        showMessage("Витрина переполнена");
     }
 
     public void errorEmptyShowcase() {
-        System.out.println("Витрина пуста");
+        showMessage("Витрина пуста");
+    }
+
+    public void errorNoShowcases() {
+        showMessage("Витрин нет");
     }
 
     public void errorNotEmptyQueue() {
-        System.out.println("Раздай предыдущие игрушки!");
+        showMessage("Раздай предыдущие игрушки!");
     }
 
     public void errorEmptyPrizeLine() {
@@ -45,13 +52,28 @@ public class View {
     }
 
     public void shopInspection(Shop shop) {
-        for (Showcase showcase : shop.getShowcases()) {
-            System.out.println("Витрина: ");
-            System.out.println(showcase);
+        System.out.println("Склад: ");
+        if (shop.getWarehouse().getToyQuantity() == 0) {
+            System.out.println("Нет игрушек.");
+        } else {
+            for (Toy toy: shop.getWarehouse().getToys()) {
+                System.out.println(toy);
+            }
         }
 
-        System.out.println("Очередь разыграных игрушек: ");
+        System.out.println();
 
+        if (shop.getNumberOfShoucases() == 0) {
+            System.out.println("Нет витрин.");
+        } else {
+            for (Showcase showcase : shop.getShowcases()) {
+                System.out.println(showcase);
+            }
+        }
+
+        System.out.println();
+
+        System.out.println("Очередь разыграных игрушек: ");
         if (shop.getPrizeLine().size() == 0) {
             System.out.println("Пусто");
         } else {
@@ -60,9 +82,15 @@ public class View {
             }
         }
 
+        System.out.println();
     }
 
     public void showMessage(String text) {
         System.out.println(text);
+        System.out.println();
+    }
+
+    public void errorEmptyWarehouse() {
+        showMessage("Склад пуст");
     }
 }
