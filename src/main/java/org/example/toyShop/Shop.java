@@ -169,9 +169,6 @@ public class Shop {
         for (Showcase showcase : showcases) {
             if (showcase.contains(toy)) showcase.delToy(toy);
         }
-
-        // записать в файл
-
         return toy;
     }
 
