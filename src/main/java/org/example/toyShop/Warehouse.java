@@ -18,9 +18,14 @@ public class Warehouse {
      * @param type
      * @param weight
      */
-    public void addToy(String type, int weight) {
+    public void add(String type, int weight) {
         toys.add(new Toy(type, weight));
         toys.get(toys.size() - 1).setId(this.getNewID());
+    }
+
+    public void add(Toy toy) {
+        toys.add(toy);
+        if (toy.getId()> lastToyId) lastToyId = toy.getId();
     }
 
     /**

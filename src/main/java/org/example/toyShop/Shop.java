@@ -1,5 +1,6 @@
 package org.example.toyShop;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -19,13 +20,87 @@ public class Shop {
         lastShowcaseId = 0;
     }
 
+    /**
+     * Загружает данные из базы
+     */
+    public void init() {
+        try (BufferedReader br = new BufferedReader(new FileReader("shop.db"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(";");
+
+                if (data[0].equals("warehouse")) {
+                    warehouse.add(new Toy(data[1], Integer.parseInt(data[2]), Integer.parseInt(data[3]), data[4]));
+                } else if (data[0].equals("prizeline")) {
+                    prizeLine.add(new Toy(data[1], Integer.parseInt(data[2]), Integer.parseInt(data[3]), data[4]));
+                } else if (data[0].equals("showcase")) {
+                    Showcase sc = this.getShowcaseById(Integer.parseInt(data[1]));
+                    if (sc == null) {
+                        showcases.add(new Showcase(Integer.parseInt(data[1]), data[2], Integer.parseInt(data[3])));
+                    }
+                } else if (data[0].equals("showcaseToy")) {
+                    Showcase sc = this.getShowcaseById(Integer.parseInt(data[5]));
+                    sc.addToy(new Toy(data[1], Integer.parseInt(data[2]), Integer.parseInt(data[3]), data[4]));
+                }
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void save() {
+        File file = new File("shop.db");
+        FileWriter fr = null;
+        BufferedWriter br = null;
+        try {
+            fr = new FileWriter(file, false);
+            br = new BufferedWriter(fr);
+
+            for (Toy toy : warehouse.getToys()) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("warehouse").append(";").append(toy.getBaseString()).append("\n");
+                br.write(sb.toString());
+            }
+
+            for (Toy toy : prizeLine) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("prizeline").append(";").append(toy.getBaseString()).append("\n");
+                br.write(sb.toString());
+            }
+
+            for (Showcase sc : showcases) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("showcase").append(";").append(sc.getBaseString()).append("\n");
+                br.write(sb.toString());
+            }
+
+            for (Showcase sc : showcases) {
+                for (Toy toy : sc.getToys()) {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("showcaseToy").append(";").append(toy.getBaseString()).append(";").append(sc.getBaseString()).append("\n");
+                    br.write(sb.toString());
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                br.close();
+                fr.close();
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
     public void addShowcase(String type, int size) {
         lastShowcaseId++;
         showcases.add(new Showcase(lastShowcaseId, type, size));
     }
 
     public Showcase getShowcaseById(int id) {
-        for (Showcase sc: showcases) {
+        for (Showcase sc : showcases) {
             if (sc.getId() == id) return sc;
         }
         return null;
@@ -85,7 +160,7 @@ public class Shop {
             int prizeToyId = wheelOfFortune.run();
 
             // сектор ПРИЗ на барабане ;)
-            prizeLine.add(getToyById(prizeToyId));
+            prizeLine.add(this.getToyById(prizeToyId));
         }
     }
 

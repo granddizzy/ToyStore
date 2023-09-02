@@ -11,6 +11,7 @@ public class Main {
 
         // создаем магазин
         Shop shop = new Shop("Магазин игрушек");
+        shop.init();
 
         View view = new View();
         view.showGreeting(shop);
@@ -21,6 +22,7 @@ public class Main {
             String num = view.input("Выберите пункт меню: ");
             switch (num) {
                 case "0":
+                    shop.save();
                     break label;
                 case "1":
                     view.shopInspection(shop);
@@ -37,8 +39,9 @@ public class Main {
                         weightOfToys = view.input("Введите вес выпадения игрушки:");
                     } while (!checkIsDigit(weightOfToys));
                     for (int i = 0; i < Integer.parseInt(numberOfToys); i++) {
-                        shop.getWarehouse().addToy(toyType, Integer.parseInt(weightOfToys));
+                        shop.getWarehouse().add(toyType, Integer.parseInt(weightOfToys));
                     }
+                    shop.save();
                     break;
                 }
                 case "3": {
@@ -49,6 +52,7 @@ public class Main {
                         showcaseSize = view.input("Введите размер витрины:");
                     } while (!checkIsDigit(showcaseSize) || Integer.parseInt(showcaseSize) <= 0);
                     shop.addShowcase(toyType, Integer.parseInt(showcaseSize));
+                    shop.save();
                     break;
                 }
                 case "4":
@@ -60,7 +64,11 @@ public class Main {
                     if (sc == null) {
                         view.showMessage("Нет витрины с таким ID");
                     } else {
-                        if (shop.delShowcase(sc)) view.showMessage("Витрина c ID: " + idShowcase + " удалена");
+                        if (shop.delShowcase(sc)) {
+                            view.showMessage("Витрина c ID: " + idShowcase + " удалена");
+                            shop.save();
+                        }
+                        else view.showMessage("Не могу удалить витрину c ID: " + idShowcase + ". На ней есть игрушки.");
                     }
                     break;
                 case "5":
@@ -83,6 +91,7 @@ public class Main {
                         for (Showcase showcase : shop.getShowcases()) {
                             view.showMessage("Витрина ID:" + showcase.getId() + " с игрушками типа:" + showcase.getType() + " заполнена на " + Math.round((double) showcase.getToyQuantity() / showcase.getSize() * 100) + "%");
                         }
+                        shop.save();
                     }
                     break;
                 case "6":
@@ -96,6 +105,7 @@ public class Main {
                         } else {
                             shop.holdALottery();
                             view.showMessage("Розыгрыш проведен.");
+                            shop.save();
                         }
                     }
                     break;
@@ -120,6 +130,7 @@ public class Main {
                             String file_path = "log.txt";
                             saveInLog(file_path, toy, child);
                         }
+                        shop.save();
                         view.showMessage("Игрушки розданы!");
                     }
                     break;

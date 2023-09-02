@@ -70,7 +70,7 @@ public class Showcase {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("Витрина ID:").append(id).append("\n");
+        sb.append("Витрина ID:").append(id).append(" Тип:").append(this.type).append("\n");
         if (toys.size() > 0) {
             for (Toy toy : toys) {
                 sb.append(toy.toString()).append("\n");
@@ -144,5 +144,12 @@ public class Showcase {
      */
     public boolean checkEmptyShowcase() {
         return this.getToyQuantity() <= 0;
+    }
+
+    public String getBaseString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.getId()).append(";").append(this.getType()).append(";").append(this.getSize());
+
+        return sb.toString();
     }
 }

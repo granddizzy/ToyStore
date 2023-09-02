@@ -24,7 +24,7 @@ public class View {
         System.out.println("4. Удалить витрину");
         System.out.println("5. Пополнить витрины со склада");
         System.out.println("6. Провести розыгрыш");
-        System.out.println("7. Раздавать игрушки");
+        System.out.println("7. Раздать игрушки");
         System.out.println("0. Уйти");
     }
 
@@ -35,19 +35,19 @@ public class View {
     }
 
     public void errorFullShowcases() {
-        showMessage("Витрина переполнена");
+        this.showMessage("Витрины переполнены");
     }
 
     public void errorEmptyShowcase() {
-        showMessage("Витрина пуста");
+        this.showMessage("Витрина пуста");
     }
 
     public void errorNoShowcases() {
-        showMessage("Витрин нет");
+        this.showMessage("Витрин нет");
     }
 
     public void errorNotEmptyQueue() {
-        showMessage("Раздай предыдущие игрушки!");
+        this.showMessage("Раздай предыдущие игрушки!");
     }
 
     public void errorEmptyPrizeLine() {
@@ -61,15 +61,14 @@ public class View {
     public void shopInspection(Shop shop) {
         System.out.println("Склад: ");
         if (shop.getWarehouse().getToyQuantity() == 0) {
-            errorEmptyWarehouse();
+            this.errorEmptyWarehouse();
         } else {
             for (Toy toy: shop.getWarehouse().getToys()) {
                 System.out.println(toy);
             }
         }
 
-        System.out.println();
-
+        System.out.println("Витрины:");
         if (shop.getNumberOfShoucases() == 0) {
             System.out.println("Нет витрин.");
         } else {

@@ -20,6 +20,13 @@ public class Toy {
         this.type = type;
     }
 
+    public Toy(String type, int weight, int id, String name) {
+        this.id = id;
+        this.name = name;
+        this.weight = weight;
+        this.type = type;
+    }
+
     /**
      * Получает случайное имя для игрушки
      * @return
@@ -75,5 +82,12 @@ public class Toy {
      */
     public String getType() {
         return type;
+    }
+
+    public String getBaseString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.getType()).append(";").append(this.getWeight()).append(";").append(this.getId()).append(";").append(this.getName());
+
+        return sb.toString();
     }
 }
